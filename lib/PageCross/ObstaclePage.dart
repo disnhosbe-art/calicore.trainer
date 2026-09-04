@@ -1,7 +1,7 @@
 import 'package:calicore/home/ExercisePage.dart';
 import 'package:flutter/material.dart';
+import '../Ads/interstitial_ad_manager .dart';
 
-import '../Ads/AdService.dart';
 
 class ObstaclePage extends StatefulWidget {
   const ObstaclePage({super.key, required title, required image, required description, required bodyImage});
@@ -128,19 +128,21 @@ class _CrossPageState extends State<ObstaclePage> {
             ),
 
             onTap: () {
-              AdService.showInterstitial(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExercisePage(
-                      title: exercise["title"]!,
-                      image: exercise["image"]!,
-                      description: exercise["description"]!,
-                      bodyImage: exercise["bodyImage"]!,
+              InterstitialAdManager.showAd(
+                onComplete: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExercisePage(
+                        title: exercise["title"]!,
+                        image: exercise["image"]!,
+                        description: exercise["description"]!,
+                        bodyImage: exercise["bodyImage"]!,
+                      ),
                     ),
-                  ),
-                );
-              });
+                  );
+                },
+              );
             },
           ),
 

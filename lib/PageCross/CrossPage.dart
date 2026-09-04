@@ -1,7 +1,9 @@
 import 'package:calicore/home/ExercisePage.dart';
 import 'package:flutter/material.dart';
 
-import '../Ads/AdService.dart';
+import '../Ads/interstitial_ad_manager .dart';
+
+
 
 class CrossPage extends StatefulWidget {
   const CrossPage({super.key});
@@ -165,19 +167,21 @@ class _CrossPageState extends State<CrossPage> {
             ),
 
             onTap: () {
-              AdService.showInterstitial(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExercisePage(
-                      title: exercise["title"]!,
-                      image: exercise["image"]!,
-                      description: exercise["description"]!,
-                      bodyImage: exercise["bodyImage"]!,
+              InterstitialAdManager.showAd(
+                onComplete: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExercisePage(
+                        title: exercise["title"]!,
+                        image: exercise["image"]!,
+                        description: exercise["description"]!,
+                        bodyImage: exercise["bodyImage"]!,
+                      ),
                     ),
-                  ),
-                );
-              });
+                  );
+                },
+              );
             },
           ),
 

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'Ads/AdService.dart';
-import 'Welcome.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+import 'Welcome.dart';
+import 'ads_servise.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AdService.initAds();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  await AdsService.initialize();
+
   runApp(const MyApp());
 }
 

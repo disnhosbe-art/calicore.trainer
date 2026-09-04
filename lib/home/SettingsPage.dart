@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../Ads/banner_ad_widget .dart';
 import '../Settings/AboutPage.dart';
 import '../Settings/Notifications.dart';
 import '../Settings/Privacy Policy.dart';
-
-
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -109,6 +107,8 @@ class SettingsPage extends StatelessWidget {
 
         const SizedBox(height: 20),
 
+        const BannerAdWidget(),
+
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -142,19 +142,18 @@ class SettingsPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 trailing: const Icon(Icons.open_in_new, color: Colors.grey),
-                onTap: () async {
-                  final Uri appUrl = Uri.parse("instagram://user?username=soufian_sadoq");
-                  final Uri webUrl = Uri.parse("https://www.instagram.com/soufian_sadoq/");
+                  onTap: () async {
+                    try {
+                      final Uri webUrl = Uri.parse("https://www.instagram.com/soufian_sadoq/");
 
-                  if (await canLaunchUrl(appUrl)) {
-                    await launchUrl(appUrl);
-                  } else {
-                    await launchUrl(
-                      webUrl,
-                      mode: LaunchMode.externalApplication,
-                    );
+                      await launchUrl(
+                        webUrl,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } catch (e) {
+                      print("Error: $e");
+                    }
                   }
-                },
               )
 
             ],

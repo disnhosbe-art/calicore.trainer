@@ -1,7 +1,7 @@
 import 'package:calicore/home/ExercisePage.dart';
 import 'package:flutter/material.dart';
+import '../Ads/rewarded_ad_manager .dart';
 
-import '../Ads/AdService.dart';
 
 class StreetPage extends StatefulWidget {
   const StreetPage({super.key, required title, required image, required description, required bodyImage});
@@ -138,19 +138,21 @@ class _CrossPageState extends State<StreetPage> {
             ),
 
             onTap: () {
-              AdService.showInterstitial(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExercisePage(
-                      title: exercise["title"]!,
-                      image: exercise["image"]!,
-                      description: exercise["description"]!,
-                      bodyImage: exercise["bodyImage"]!,
+              RewardedAdManager.showAd(
+                onFinished: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExercisePage(
+                        title: exercise["title"]!,
+                        image: exercise["image"]!,
+                        description: exercise["description"]!,
+                        bodyImage: exercise["bodyImage"]!,
+                      ),
                     ),
-                  ),
-                );
-              });
+                  );
+                },
+              );
             },
           ),
 

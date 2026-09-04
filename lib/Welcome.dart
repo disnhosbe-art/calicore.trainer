@@ -2,8 +2,6 @@ import 'package:calicore/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 
-import 'Ads/AdService.dart';
-
 
 
 class WelcomeScreen extends StatelessWidget {
@@ -83,12 +81,12 @@ class WelcomeScreen extends StatelessWidget {
                         elevation: 5,
                       ),
                       onPressed: () {
-                        AdService.showRewarded(() {
+                         {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Welcome()),
                           );
-                        });
+                        };
                       },
                       child: const Text(
                         "Get Started",
