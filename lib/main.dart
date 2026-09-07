@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Welcome.dart';
-import 'ads_servise.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +11,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await AdsService.initialize();
+
 
   runApp(const MyApp());
 }

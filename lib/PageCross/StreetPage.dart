@@ -1,6 +1,5 @@
 import 'package:calicore/home/ExercisePage.dart';
 import 'package:flutter/material.dart';
-import '../Ads/rewarded_ad_manager .dart';
 
 
 class StreetPage extends StatefulWidget {
@@ -138,20 +137,16 @@ class _CrossPageState extends State<StreetPage> {
             ),
 
             onTap: () {
-              RewardedAdManager.showAd(
-                onFinished: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ExercisePage(
-                        title: exercise["title"]!,
-                        image: exercise["image"]!,
-                        description: exercise["description"]!,
-                        bodyImage: exercise["bodyImage"]!,
-                      ),
-                    ),
-                  );
-                },
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExercisePage(
+                    title: exercise["title"]!,
+                    image: exercise["image"]!,
+                    description: exercise["description"]!,
+                    bodyImage: exercise["bodyImage"]!,
+                  ),
+                ),
               );
             },
           ),

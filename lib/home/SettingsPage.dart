@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Ads/banner_ad_widget .dart';
 import '../Settings/AboutPage.dart';
 import '../Settings/Notifications.dart';
 import '../Settings/Privacy Policy.dart';
@@ -106,8 +105,6 @@ class SettingsPage extends StatelessWidget {
         ]),
 
         const SizedBox(height: 20),
-
-        const BannerAdWidget(),
 
         Container(
           padding: const EdgeInsets.all(20),
