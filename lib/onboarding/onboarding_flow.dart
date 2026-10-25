@@ -29,11 +29,11 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // الانتقال مباشرة لصفحة CaliCoreApp الرئيسية
+      // الانتقال مباشرة للواجهة الرئيسية ديال CaliCore
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const CaliCoreApp(),
+          builder: (context) => const CaliCoreApp(),
         ),
       );
     }
