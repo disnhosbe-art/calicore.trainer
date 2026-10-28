@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
-import '../models/exercise.dart';
-import '../widgets/custom_widgets.dart';
+import '../localization/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   final int completed;
@@ -13,182 +11,296 @@ class HomePage extends StatelessWidget {
     required this.onStart,
   });
 
+  static const Color bg = Color(0xFF030706);
+  static const Color green = Color(0xFF39FF14);
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Row(
+    final tr = AppLocalizations.of(context);
+
+    final workouts = [
+      {
+        'name': 'CHEST',
+        'info': '6 exercises  •  25 min',
+        'image': 'assets/01_chest.png',
+        'icon': Icons.fitness_center,
+      },
+      {
+        'name': 'BACK',
+        'info': '6 exercises  •  30 min',
+        'image': 'assets/02_back.png',
+        'icon': Icons.accessibility_new,
+      },
+      {
+        'name': 'LEGS',
+        'info': '5 exercises  •  25 min',
+        'image': 'assets/03_legs.png',
+        'icon': Icons.directions_run,
+      },
+      {
+        'name': 'SHOULDERS',
+        'info': '5 exercises  •  25 min',
+        'image': 'assets/04_shoulders.png',
+        'icon': Icons.sports_gymnastics,
+      },
+      {
+        'name': 'ARMS & ABS',
+        'info': '6 exercises  •  25 min',
+        'image': 'assets/05_arms_abs.png',
+        'icon': Icons.fitness_center,
+      },
+    ];
+
+    return Scaffold(
+      backgroundColor: bg,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(18, 12, 18, 25),
           children: [
-            const Icon(Icons.bolt, color: neonGreen, size: 38),
-            const Text(
-              'Cali',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const Text(
-              'Core',
-              style: TextStyle(
-                color: neonGreen,
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: () {
-                showAboutDialog(
-                  context: context,
-                  applicationName: 'CaliCore',
-                  applicationVersion: '1.0.0',
-                  children: [
-                    const Text('Train smart. Get strong.'),
-                  ],
-                );
-              },
-              icon: const Icon(Icons.settings_outlined),
-            ),
-          ],
-        ),
-        const Text(
-          'TRAIN SMART • GET STRONG',
-          style: TextStyle(
-            color: mutedText,
-            fontSize: 10,
-            letterSpacing: 2,
-          ),
-        ),
-        const SizedBox(height: 22),
-        Container(
-          height: 280,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF245318),
-                Color(0xFF0C2216),
-                appBg,
+            // HEADER
+            Row(
+              children: [
+                const Icon(
+                  Icons.bolt,
+                  color: green,
+                  size: 45,
+                ),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Cali',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              height: 1,
+                            ),
+                          ),
+                          Text(
+                            'Core',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                              color: green,
+                              height: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 7),
+                      Text(
+                        'TRAIN SMART  •  GET STRONG',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 9,
+                          letterSpacing: 2.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.fitness_center,
-                color: neonGreen,
-                size: 115,
-              ),
-              SizedBox(height: 22),
-              Text(
-                'BETTER THAN',
-                style: TextStyle(
-                  color: neonGreen,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.italic,
+
+            const SizedBox(height: 18),
+
+            // HERO BANNER
+            Container(
+              height: 200,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xFF07100A),
+                border: Border.all(
+                  color: green.withValues(alpha: 0.20),
                 ),
               ),
-              Text(
-                'YESTERDAY',
-                style: TextStyle(
-                  color: neonGreen,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.italic,
-                ),
+              child: Image.asset(
+                'assets/saitama.png',
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(
+                    child: Icon(
+                      Icons.fitness_center,
+                      color: green,
+                      size: 60,
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        CaliCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Your Plan',
-                style: TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Beginner • Week 1',
-                style: TextStyle(color: mutedText),
-              ),
-              const Divider(height: 30),
-              Row(
+            ),
+
+            const SizedBox(height: 20),
+
+            // SECTION TITLE
+            Text.rich(
+              TextSpan(
                 children: [
-                  SizedBox(
-                    width: 85,
-                    height: 85,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox.expand(
-                          child: CircularProgressIndicator(
-                            value: (completed / 12).clamp(0.0, 1.0),
-                            strokeWidth: 8,
-                            backgroundColor: Colors.black,
-                            color: neonGreen,
-                          ),
-                        ),
-                        Text(
-                          '$completed/12',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                  TextSpan(
+                    text: '${tr.text('choose_workout')} ',
                   ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: exercises.map((exercise) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.fitness_center,
-                                color: neonGreen,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(exercise.name),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                  TextSpan(
+                    text: tr.text('workout'),
+                    style: const TextStyle(color: green),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              const Center(
-                child: Text(
-                  'Workouts Completed',
-                  style: TextStyle(color: mutedText),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 27,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // WORKOUT CARDS
+            ...workouts.map((workout) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Material(
+                  color: const Color(0xFF07100D),
+                  borderRadius: BorderRadius.circular(15),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: onStart,
+                    child: Container(
+                      height: 108,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: green.withValues(alpha: 0.75),
+                          width: 1.2,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          // IMAGE
+                          SizedBox(
+                            width: 125,
+                            height: double.infinity,
+                            child: Image.asset(
+                              workout['image'] as String,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topCenter,
+                              errorBuilder: (
+                                  context,
+                                  error,
+                                  stackTrace,
+                                  ) {
+                                return Container(
+                                  color: const Color(0xFF102014),
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    workout['icon'] as IconData,
+                                    color: green,
+                                    size: 42,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          // WORKOUT DETAILS
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  workout['name'] as String,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  workout['info'] as String,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: Icon(
+                              Icons.chevron_right,
+                              color: green,
+                              size: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+
+            const SizedBox(height: 8),
+
+            // START BUTTON
+            SizedBox(
+              height: 55,
+              child: ElevatedButton.icon(
+                onPressed: onStart,
+                icon: const Icon(
+                  Icons.play_arrow,
+                  color: Colors.black,
+                ),
+                label: Text(
+                  tr.text('start_workout'),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 14),
+
+            Center(
+              child: Text(
+                '${tr.text('workouts_completed')}: $completed',
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 22),
-        CaliButton(
-          title: 'Start Workout',
-          icon: Icons.play_arrow,
-          onPressed: onStart,
-        ),
-      ],
+      ),
     );
   }
 }

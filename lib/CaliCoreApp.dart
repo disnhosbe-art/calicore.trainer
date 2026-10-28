@@ -1,50 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'screens/progress_page.dart';
 import 'screens/home_page.dart';
 import 'screens/workouts_page.dart';
-import 'screens/progress_page.dart';
 import 'screens/profile_page.dart';
 import 'widgets/custom_widgets.dart';
+import 'localization/language_controller.dart';
 
 class CaliCoreApp extends StatelessWidget {
   const CaliCoreApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CaliCore',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: appBg,
-        colorScheme: const ColorScheme.dark(
-          primary: neonGreen,
-          surface: appPanel,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: appBg,
-          foregroundColor: Colors.white,
-          centerTitle: false,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-        ),
-      ),
+    return AnimatedBuilder(
+      animation: LanguageController.instance,
       builder: (context, child) {
-        return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarColor: appBg,
-            systemNavigationBarDividerColor: appBg,
-            systemNavigationBarIconBrightness: Brightness.light,
-            systemNavigationBarContrastEnforced: false,
+        final locale = LanguageController.instance.locale;
+        final isArabic = locale.languageCode == 'ar';
+
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'CaliCore',
+          locale: locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('ar'),
+            Locale('fr'),
+            Locale('pt', 'BR'),
+          ],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: appBg,
+            colorScheme: const ColorScheme.dark(
+              primary: neonGreen,
+              surface: appPanel,
+            ),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: appBg,
+              foregroundColor: Colors.white,
+              centerTitle: false,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+            ),
           ),
-          child: child ?? const SizedBox.shrink(),
+          builder: (context, child) {
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.light,
+                systemNavigationBarColor: appBg,
+                systemNavigationBarDividerColor: appBg,
+                systemNavigationBarIconBrightness: Brightness.light,
+                systemNavigationBarContrastEnforced: false,
+              ),
+              child: Directionality(
+                textDirection:
+                isArabic ? TextDirection.rtl : TextDirection.ltr,
+                child: child ?? const SizedBox.shrink(),
+              ),
+            );
+          },
+          home: const MainScreen(),
         );
       },
-      home: const MainScreen(),
     );
   }
 }
@@ -60,6 +86,19 @@ class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 0;
   int completedWorkouts = 0;
   int totalReps = 0;
+
+  String tr(String en, String ar, String fr, String pt) {
+    switch (Localizations.localeOf(context).languageCode) {
+      case 'ar':
+        return ar;
+      case 'fr':
+        return fr;
+      case 'pt':
+        return pt;
+      default:
+        return en;
+    }
+  }
 
   void completeWorkout(int reps) {
     setState(() {
@@ -97,6 +136,13 @@ class _MainScreenState extends State<MainScreen> {
 
     final bottomInset = MediaQuery.of(context).viewPadding.bottom;
 
+    final labels = [
+      tr('Home', 'الرئيسية', 'Accueil', 'Início'),
+      tr('Workouts', 'التمارين', 'Entraînement', 'Treinos'),
+      tr('Progress', 'التقدم', 'Progrès', 'Progresso'),
+      tr('Profile', 'الملف الشخصي', 'Profil', 'Perfil'),
+    ];
+
     return Scaffold(
       extendBody: true,
       backgroundColor: appBg,
@@ -125,8 +171,8 @@ class _MainScreenState extends State<MainScreen> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.22),
-                blurRadius: 20,
+                color: Colors.black.withValues(alpha: 0.25),
+                blurRadius: 18,
                 offset: const Offset(0, 6),
               ),
             ],
@@ -135,21 +181,25 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               _navItem(
                 index: 0,
+                label: labels[0],
                 icon: Icons.home_outlined,
                 selectedIcon: Icons.home_rounded,
               ),
               _navItem(
                 index: 1,
+                label: labels[1],
                 icon: Icons.fitness_center,
                 selectedIcon: Icons.fitness_center_rounded,
               ),
               _navItem(
                 index: 2,
+                label: labels[2],
                 icon: Icons.bar_chart_outlined,
                 selectedIcon: Icons.bar_chart_rounded,
               ),
               _navItem(
                 index: 3,
+                label: labels[3],
                 icon: Icons.person_outline_rounded,
                 selectedIcon: Icons.person_rounded,
               ),
@@ -162,6 +212,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _navItem({
     required int index,
+    required String label,
     required IconData icon,
     required IconData selectedIcon,
   }) {
@@ -190,16 +241,36 @@ class _MainScreenState extends State<MainScreen> {
                     : null,
               ),
               child: Center(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    isSelected ? selectedIcon : icon,
-                    key: ValueKey('$index-$isSelected'),
-                    color: isSelected
-                        ? neonGreen
-                        : Colors.white.withValues(alpha: 0.65),
-                    size: isSelected ? 29 : 26,
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        isSelected ? selectedIcon : icon,
+                        key: ValueKey('$index-$isSelected'),
+                        color: isSelected
+                            ? neonGreen
+                            : Colors.white.withValues(alpha: 0.65),
+                        size: isSelected ? 26 : 23,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        color: isSelected
+                            ? neonGreen
+                            : Colors.white.withValues(alpha: 0.65),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
